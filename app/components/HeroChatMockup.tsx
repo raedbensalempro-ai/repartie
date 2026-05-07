@@ -23,7 +23,7 @@ export function HeroChatMockup() {
 
     const loop = async () => {
       while (!cancelled) {
-        // 1. Phase "thinking" — affiche l'indicateur HostAI génère...
+        // 1. Phase "thinking" — affiche l'indicateur Stayly génère...
         setPhase("thinking");
         setTyped("");
         await sleep(1800);
@@ -88,7 +88,7 @@ export function HeroChatMockup() {
             {phase === "thinking" && (
               <div className="flex items-center gap-2 pl-11 text-xs text-zinc-500">
                 <span className="flex h-1.5 w-1.5 rounded-full bg-rose-400 animate-pulse" />
-                HostAI rédige une réponse...
+                Stayly rédige une réponse...
               </div>
             )}
 

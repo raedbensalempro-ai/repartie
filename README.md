@@ -1,8 +1,8 @@
-# HostAI
+# Stayly
 
 > L'IA qui répond à tes voyageurs Airbnb en quelques secondes, sans perdre le ton humain.
 
-HostAI est un micro SaaS qui aide les hôtes Airbnb à générer rapidement des réponses professionnelles et chaleureuses à leurs voyageurs grâce à l'IA.
+Stayly est un micro SaaS qui aide les hôtes Airbnb à générer rapidement des réponses professionnelles et chaleureuses à leurs voyageurs grâce à l'IA.
 
 ## Stack
 

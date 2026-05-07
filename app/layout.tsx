@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "HostAI · Réponds à tes voyageurs Airbnb en quelques secondes",
+  title: "Stayly · Réponds à tes voyageurs Airbnb en quelques secondes",
   description:
-    "HostAI génère des réponses professionnelles, chaleureuses et personnalisées aux voyageurs Airbnb grâce à l'IA. Gagne du temps, garde la qualité.",
+    "Stayly génère des réponses professionnelles, chaleureuses et personnalisées aux voyageurs Airbnb grâce à l'IA. Gagne du temps, garde la qualité.",
 };
 
 export default function RootLayout({

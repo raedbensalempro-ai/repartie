@@ -2,7 +2,7 @@ import Link from "next/link";
 import { HeroChatMockup } from "./components/HeroChatMockup";
 
 // =====================================================
-// Landing page HostAI · V3 Hospitalité
+// Landing page Stayly · V3 Hospitalité
 // Direction : dark premium AI startup + chaleur Airbnb / hospitalité
 // Mots-clés visuels : sunset glows, grain texture, italique serif, tons coral/amber/rose
 // =====================================================
@@ -33,11 +33,11 @@ export default function Home() {
       {/* === GRAIN TEXTURE (fixed, suit le scroll) === */}
       <div className="pointer-events-none fixed inset-0 -z-10 opacity-[0.035] mix-blend-overlay">
         <svg className="h-full w-full">
-          <filter id="hostai-grain">
+          <filter id="stayly-grain">
             <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="3" />
             <feColorMatrix values="0 0 0 0 1  0 0 0 0 0.92  0 0 0 0 0.85  0 0 0 0.6 0" />
           </filter>
-          <rect width="100%" height="100%" filter="url(#hostai-grain)" />
+          <rect width="100%" height="100%" filter="url(#stayly-grain)" />
         </svg>
       </div>
 
@@ -48,7 +48,7 @@ export default function Home() {
             <span className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-300 via-rose-400 to-rose-600 text-white font-bold shadow-lg shadow-rose-500/30">
               H
             </span>
-            <span className="font-semibold text-lg tracking-tight">HostAI</span>
+            <span className="font-semibold text-lg tracking-tight">Stayly</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-8 text-sm text-zinc-400">
@@ -85,7 +85,7 @@ export default function Home() {
           </h1>
 
           <p className="mt-7 text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-            HostAI rédige des réponses pro et chaleureuses à ta place.
+            Stayly rédige des réponses pro et chaleureuses à ta place.
             Gagne du temps,{" "}
             <span className="font-serif italic text-zinc-200">garde l&apos;humain</span>.
           </p>
@@ -264,7 +264,7 @@ export default function Home() {
         <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[400px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-amber-500/15 via-rose-500/25 to-fuchsia-500/15 blur-[120px]" />
 
         <div className="mx-auto max-w-3xl px-6 text-center">
-          <p className="font-serif italic text-rose-300/80 mb-4">Bienvenue chez HostAI.</p>
+          <p className="font-serif italic text-rose-300/80 mb-4">Bienvenue chez Stayly.</p>
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight bg-gradient-to-b from-white to-zinc-400 bg-clip-text text-transparent">
             Prêt à mieux accueillir,
             <br />
@@ -294,7 +294,7 @@ export default function Home() {
             <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-amber-300 via-rose-400 to-rose-600 text-white text-xs font-bold">
               H
             </span>
-            <span>© 2026 HostAI</span>
+            <span>© 2026 Stayly</span>
             <span className="hidden md:inline font-serif italic text-zinc-600">·</span>
             <span className="hidden md:inline font-serif italic text-zinc-600">
               fait avec soin pour les hôtes
