@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { HeroChatMockup } from "./components/HeroChatMockup";
+import { LiveDemo } from "./components/LiveDemo";
+import { Logo } from "./components/Logo";
 
 // =====================================================
 // Landing page Stayly · V3 Hospitalité
@@ -20,34 +22,21 @@ export default function Home() {
                      [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
         />
 
-        {/* Lumière chaude (style soleil couchant) en haut-gauche */}
-        <div className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full bg-amber-500/15 blur-[140px] animate-warm-drift" />
+        {/* Lumière chaude (sunset) en haut-gauche — statique pour économiser le GPU */}
+        <div className="absolute -top-32 -left-32 h-[500px] w-[500px] rounded-full bg-amber-500/15 blur-[100px]" />
         {/* Coral central — la signature */}
-        <div className="absolute -top-20 left-1/2 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-rose-500/25 blur-[140px]" />
+        <div className="absolute -top-20 left-1/2 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-rose-500/25 blur-[100px]" />
         {/* Rose-fuchsia à droite */}
-        <div className="absolute top-[15%] -right-20 h-[450px] w-[500px] rounded-full bg-fuchsia-500/12 blur-[140px]" />
+        <div className="absolute top-[15%] -right-20 h-[450px] w-[500px] rounded-full bg-fuchsia-500/12 blur-[100px]" />
         {/* Petit accent orange en bas */}
-        <div className="absolute bottom-[10%] left-[10%] h-[300px] w-[400px] rounded-full bg-orange-500/8 blur-[120px]" />
-      </div>
-
-      {/* === GRAIN TEXTURE (fixed, suit le scroll) === */}
-      <div className="pointer-events-none fixed inset-0 -z-10 opacity-[0.035] mix-blend-overlay">
-        <svg className="h-full w-full">
-          <filter id="stayly-grain">
-            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="3" />
-            <feColorMatrix values="0 0 0 0 1  0 0 0 0 0.92  0 0 0 0 0.85  0 0 0 0.6 0" />
-          </filter>
-          <rect width="100%" height="100%" filter="url(#stayly-grain)" />
-        </svg>
+        <div className="absolute bottom-[10%] left-[10%] h-[300px] w-[400px] rounded-full bg-orange-500/8 blur-[90px]" />
       </div>
 
       {/* === NAVIGATION === */}
       <header className="sticky top-0 z-50 border-b border-white/5 bg-[#0a0908]/70 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2.5">
-            <span className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-300 via-rose-400 to-rose-600 text-white font-bold shadow-lg shadow-rose-500/30">
-              H
-            </span>
+            <Logo size="sm" />
             <span className="font-semibold text-lg tracking-tight">Stayly</span>
           </Link>
 
@@ -156,65 +145,21 @@ export default function Home() {
       {/* === BEFORE / AFTER DEMO === */}
       <section id="demo" className="relative border-t border-white/5 py-24">
         {/* Glow chaud derrière */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[400px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-amber-500/8 via-rose-500/12 to-fuchsia-500/8 blur-[150px]" />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[400px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-amber-500/8 via-rose-500/12 to-fuchsia-500/8 blur-[100px]" />
 
         <div className="mx-auto max-w-5xl px-6">
           <div className="text-center mb-16">
             <p className="font-serif italic text-rose-300/80 mb-3">L&apos;expérience</p>
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight bg-gradient-to-b from-white to-zinc-400 bg-clip-text text-transparent">
-              Avant · Après
+              Essaie maintenant
             </h2>
             <p className="mt-4 text-zinc-400">
-              Un message reçu, une réponse{" "}
-              <span className="font-serif italic text-zinc-200">qui a du cœur</span>, générée par l&apos;IA.
+              Colle un message reçu, et regarde Stayly{" "}
+              <span className="font-serif italic text-zinc-200">y répondre en direct</span>.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Bloc AVANT */}
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur ring-1 ring-inset ring-white/[0.03]">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="h-9 w-9 rounded-full bg-gradient-to-br from-zinc-600 to-zinc-700 flex items-center justify-center text-sm font-medium text-white">
-                  M
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-white">Marc · voyageur</p>
-                  <p className="text-xs text-zinc-500">Message reçu</p>
-                </div>
-                <span className="ml-auto rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-zinc-400">
-                  Avant
-                </span>
-              </div>
-              <p className="text-zinc-300 text-sm leading-relaxed">
-                Bonjour, on arrive demain à 22h, c&apos;est possible de check-in tard ? Et est-ce
-                qu&apos;il y a un parking gratuit dans le coin ? Merci !
-              </p>
-            </div>
-
-            {/* Bloc APRÈS avec border en gradient chaud */}
-            <div className="relative rounded-2xl bg-gradient-to-b from-amber-300/30 via-rose-400/30 to-rose-600/10 p-px shadow-[0_0_50px_-10px_rgba(251,113,133,0.4)]">
-              <div className="rounded-2xl bg-[#0a0908]/95 p-6 ring-1 ring-inset ring-white/[0.03]">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="h-9 w-9 rounded-full bg-gradient-to-br from-amber-300 via-rose-400 to-rose-600 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-rose-500/30">
-                    H
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-white">Toi · hôte</p>
-                    <p className="text-xs text-zinc-500">Réponse suggérée</p>
-                  </div>
-                  <span className="ml-auto rounded-full bg-gradient-to-r from-rose-500 to-orange-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                    Après
-                  </span>
-                </div>
-                <p className="text-zinc-200 text-sm leading-relaxed">
-                  Bonjour Marc, merci pour votre message ! Pas de souci pour un check-in à 22h, je
-                  vous enverrai les instructions d&apos;accès dans la journée. Pour le parking, il y
-                  a une zone gratuite à 100m du logement, je vous joindrai la localisation. À très
-                  vite !
-                </p>
-              </div>
-            </div>
-          </div>
+          <LiveDemo />
         </div>
       </section>
 
@@ -261,7 +206,7 @@ export default function Home() {
       {/* === FINAL CTA === */}
       <section className="relative border-t border-white/5 py-28">
         {/* Sunset glow */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[400px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-amber-500/15 via-rose-500/25 to-fuchsia-500/15 blur-[120px]" />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[400px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-amber-500/15 via-rose-500/25 to-fuchsia-500/15 blur-[90px]" />
 
         <div className="mx-auto max-w-3xl px-6 text-center">
           <p className="font-serif italic text-rose-300/80 mb-4">Bienvenue chez Stayly.</p>
@@ -291,9 +236,7 @@ export default function Home() {
       <footer className="border-t border-white/5 py-10">
         <div className="mx-auto max-w-6xl px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-zinc-500">
           <div className="flex items-center gap-3">
-            <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-amber-300 via-rose-400 to-rose-600 text-white text-xs font-bold">
-              H
-            </span>
+            <Logo size="xs" glow={false} />
             <span>© 2026 Stayly</span>
             <span className="hidden md:inline font-serif italic text-zinc-600">·</span>
             <span className="hidden md:inline font-serif italic text-zinc-600">

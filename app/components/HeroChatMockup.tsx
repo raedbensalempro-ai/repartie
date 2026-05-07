@@ -6,6 +6,7 @@
 // =====================================================
 
 import { useEffect, useState } from "react";
+import { Logo } from "./Logo";
 
 const FULL_RESPONSE =
   "Bonjour Marc, merci pour votre message ! Pas de souci pour un check-in à 22h, je vous enverrai les instructions d'accès dans la journée. Pour le parking, il y a une zone gratuite à 100m du logement, je vous joindrai la localisation. À très vite !";
@@ -51,8 +52,8 @@ export function HeroChatMockup() {
 
   return (
     <div className="relative mx-auto max-w-3xl px-6 pb-24">
-      {/* Glow sunset derrière la carte (animé : pulse lent) */}
-      <div className="absolute inset-x-0 -inset-y-8 -z-10 mx-auto max-w-2xl rounded-[3rem] bg-gradient-to-r from-amber-400/25 via-rose-500/30 to-fuchsia-500/25 blur-3xl animate-glow-pulse" />
+      {/* Glow sunset derrière la carte — statique (animer un blur 3xl tue le GPU) */}
+      <div className="absolute inset-x-0 -inset-y-8 -z-10 mx-auto max-w-2xl rounded-[3rem] bg-gradient-to-r from-amber-400/25 via-rose-500/30 to-fuchsia-500/25 blur-2xl" />
 
       {/* Carte chat avec border en gradient + float très discret */}
       <div className="relative rounded-2xl bg-gradient-to-b from-white/15 via-white/8 to-white/5 p-px shadow-2xl animate-float-slow">
@@ -101,9 +102,7 @@ export function HeroChatMockup() {
                     <span className="ml-0.5 inline-block h-3.5 w-[2px] -mb-0.5 align-middle bg-white animate-blink" />
                   )}
                 </div>
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-300 via-rose-400 to-rose-600 text-xs font-bold text-white shadow-lg shadow-rose-500/30">
-                  H
-                </div>
+                <Logo size="sm" shape="circle" />
               </div>
             )}
           </div>
