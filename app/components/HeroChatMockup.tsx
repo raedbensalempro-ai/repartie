@@ -1,8 +1,8 @@
 "use client";
 
 // =====================================================
-// Mockup chat du hero avec effet "typing" sur la réponse IA.
-// Boucle : thinking (1.8s) → typing (caractère par caractère) → pause (10s) → reset
+// Mockup chat du hero · version light Airbnb-warm
+// Boucle : thinking (1.8s) → typing → pause (10s) → reset
 // =====================================================
 
 import { useEffect, useState } from "react";
@@ -19,18 +19,15 @@ export function HeroChatMockup() {
 
   useEffect(() => {
     let cancelled = false;
-
     const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
     const loop = async () => {
       while (!cancelled) {
-        // 1. Phase "thinking" — affiche l'indicateur Stayly génère...
         setPhase("thinking");
         setTyped("");
         await sleep(1800);
         if (cancelled) return;
 
-        // 2. Phase "typing" — caractère par caractère, vitesse légèrement variable
         setPhase("typing");
         for (let i = 0; i <= FULL_RESPONSE.length; i++) {
           if (cancelled) return;
@@ -38,84 +35,79 @@ export function HeroChatMockup() {
           await sleep(15 + Math.random() * 20);
         }
 
-        // 3. Phase "done" — pause pour laisser le temps de lire
         setPhase("done");
         await sleep(10000);
       }
     };
 
     loop();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, []);
 
   return (
     <div className="relative mx-auto max-w-3xl px-6 pb-24">
-      {/* Glow sunset derrière la carte — statique (animer un blur 3xl tue le GPU) */}
-      <div className="absolute inset-x-0 -inset-y-8 -z-10 mx-auto max-w-2xl rounded-[3rem] bg-gradient-to-r from-amber-400/25 via-rose-500/30 to-fuchsia-500/25 blur-2xl" />
+      {/* Glow sunset doux derrière la carte */}
+      <div className="absolute inset-x-0 -inset-y-8 -z-10 mx-auto max-w-2xl rounded-[3rem] bg-gradient-to-r from-amber-200/60 via-rose-200/70 to-pink-200/60 blur-2xl" />
 
-      {/* Carte chat avec border en gradient + float très discret */}
-      <div className="relative rounded-2xl bg-gradient-to-b from-white/15 via-white/8 to-white/5 p-px shadow-2xl animate-float-slow">
-        <div className="rounded-2xl bg-[#0e0c0b]/85 backdrop-blur-xl ring-1 ring-inset ring-white/5">
-          {/* Title bar — contexte hôte plutôt que générique */}
-          <div className="flex items-center justify-between border-b border-white/5 px-5 py-3">
-            <div className="flex items-center gap-2">
-              <div className="flex gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-                <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-                <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-              </div>
-              <span className="ml-2 text-xs text-zinc-500">
-                Marc · Check-in demain à 22h
-              </span>
+      {/* Carte chat — fond blanc, ombre douce */}
+      <div className="relative rounded-2xl bg-white shadow-[0_20px_60px_-15px_rgba(251,113,133,0.25)] ring-1 ring-zinc-200/80 animate-float-slow">
+        {/* Title bar */}
+        <div className="flex items-center justify-between border-b border-zinc-100 px-5 py-3">
+          <div className="flex items-center gap-2">
+            <div className="flex gap-1.5">
+              <span className="h-2.5 w-2.5 rounded-full bg-zinc-200" />
+              <span className="h-2.5 w-2.5 rounded-full bg-zinc-200" />
+              <span className="h-2.5 w-2.5 rounded-full bg-zinc-200" />
             </div>
-            <span className="text-xs text-zinc-500">en direct</span>
-          </div>
-
-          {/* Conversation */}
-          <div className="space-y-4 p-6 min-h-[280px]">
-            {/* Message du voyageur */}
-            <div className="flex items-start gap-3">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-zinc-600 to-zinc-700 text-xs font-medium text-white">
-                M
-              </div>
-              <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-zinc-800/80 px-4 py-2.5 text-sm text-zinc-200">
-                Bonjour, on arrive demain à 22h, c&apos;est possible de check-in tard ? Et il y a un parking gratuit ?
-              </div>
-            </div>
-
-            {/* Indicator pendant la phase thinking */}
-            {phase === "thinking" && (
-              <div className="flex items-center gap-2 pl-11 text-xs text-zinc-500">
-                <span className="flex h-1.5 w-1.5 rounded-full bg-rose-400 animate-pulse" />
-                Stayly rédige une réponse...
-              </div>
-            )}
-
-            {/* Réponse IA (typing ou done) — gradient sunset */}
-            {(phase === "typing" || phase === "done") && (
-              <div className="flex items-start justify-end gap-3">
-                <div className="relative max-w-[85%] rounded-2xl rounded-tr-sm bg-gradient-to-br from-orange-400 via-rose-500 to-rose-600 px-4 py-2.5 text-sm text-white shadow-lg shadow-rose-500/30">
-                  {typed}
-                  {phase === "typing" && (
-                    <span className="ml-0.5 inline-block h-3.5 w-[2px] -mb-0.5 align-middle bg-white animate-blink" />
-                  )}
-                </div>
-                <Logo size="sm" shape="circle" />
-              </div>
-            )}
-          </div>
-
-          {/* Footer du mockup */}
-          <div className="flex items-center justify-between border-t border-white/5 px-5 py-3 text-xs text-zinc-500">
-            <span>
-              {phase === "thinking" && "Lecture du message..."}
-              {phase === "typing" && "Rédaction en cours..."}
-              {phase === "done" && "Rédigé en 1.2s · ton chaleureux"}
+            <span className="ml-2 text-xs text-zinc-500">
+              Marc · Check-in demain à 22h
             </span>
-            <span className="rounded-md bg-white/5 px-2 py-1 text-zinc-300">⌘ + C pour copier</span>
           </div>
+          <span className="text-xs text-zinc-400">en direct</span>
+        </div>
+
+        {/* Conversation */}
+        <div className="space-y-4 p-6 min-h-[280px]">
+          {/* Message du voyageur */}
+          <div className="flex items-start gap-3">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-zinc-100 to-zinc-200 text-xs font-medium text-zinc-700">
+              M
+            </div>
+            <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-zinc-100 px-4 py-2.5 text-sm text-zinc-800">
+              Bonjour, on arrive demain à 22h, c&apos;est possible de check-in tard ? Et il y a un parking gratuit ?
+            </div>
+          </div>
+
+          {/* Indicator pendant la phase thinking */}
+          {phase === "thinking" && (
+            <div className="flex items-center gap-2 pl-11 text-xs text-zinc-500">
+              <span className="flex h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
+              Stayly rédige une réponse...
+            </div>
+          )}
+
+          {/* Réponse IA — gradient sunset */}
+          {(phase === "typing" || phase === "done") && (
+            <div className="flex items-start justify-end gap-3">
+              <div className="relative max-w-[85%] rounded-2xl rounded-tr-sm bg-gradient-to-br from-orange-400 via-rose-500 to-rose-600 px-4 py-2.5 text-sm text-white shadow-md shadow-rose-500/20">
+                {typed}
+                {phase === "typing" && (
+                  <span className="ml-0.5 inline-block h-3.5 w-[2px] -mb-0.5 align-middle bg-white animate-blink" />
+                )}
+              </div>
+              <Logo size="sm" shape="circle" />
+            </div>
+          )}
+        </div>
+
+        {/* Footer du mockup */}
+        <div className="flex items-center justify-between border-t border-zinc-100 px-5 py-3 text-xs text-zinc-500">
+          <span>
+            {phase === "thinking" && "Lecture du message..."}
+            {phase === "typing" && "Rédaction en cours..."}
+            {phase === "done" && "Rédigé en 1.2s · ton chaleureux"}
+          </span>
+          <span className="rounded-md bg-zinc-100 px-2 py-1 text-zinc-700">⌘ + C pour copier</span>
         </div>
       </div>
     </div>

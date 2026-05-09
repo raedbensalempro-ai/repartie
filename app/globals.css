@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 /* ===================================================
-   Stayly · Base globale
-   - thème sombre premium
-   - palette chaude (sunset / hospitalité)
-   - police Geist + accents serif italique pour le côté humain
+   Stayly · Base globale (V4 light Airbnb-warm)
+   - fond cream / off-white tirant vers le chaud
+   - accent coral / rose / amber (palette sunset Airbnb)
+   - typo Geist + accents serif italique
 =================================================== */
 
 @theme inline {
@@ -14,9 +14,9 @@
 
 html,
 body {
-  /* Très légère teinte chaude dans le noir, presque imperceptible */
-  background: #0a0908;
-  color: #fafafa;
+  /* Cream warm — chaud sans être beige saturé. Très Airbnb. */
+  background: #fbf7f2;
+  color: #18181b;
   font-family: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI",
     Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -24,8 +24,8 @@ body {
 
 /* Sélection texte aux couleurs marque */
 ::selection {
-  background: rgba(251, 113, 133, 0.3); /* rose-400/30 */
-  color: #ffffff;
+  background: rgba(251, 113, 133, 0.25); /* rose-400/25 */
+  color: #18181b;
 }
 
 /* Scrollbar discrète */
@@ -34,14 +34,14 @@ body {
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0908;
+  background: #fbf7f2;
 }
 ::-webkit-scrollbar-thumb {
-  background: #292524; /* warm zinc */
+  background: #e7e5e4; /* stone-200 */
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #44403c;
+  background: #d6d3d1;
 }
 
 /* ===================================================
@@ -80,22 +80,12 @@ body {
   animation: fade-in-up 0.7s ease-out both;
 }
 
-/* Pulse très lent pour les "lumières chaudes" du fond */
-@keyframes warm-drift {
-  0%, 100% { opacity: 0.7; transform: translate(0, 0); }
-  50%      { opacity: 1;   transform: translate(20px, -10px); }
-}
-.animate-warm-drift {
-  animation: warm-drift 12s ease-in-out infinite;
-}
-
 /* Respect du préférence "moins d'animation" */
 @media (prefers-reduced-motion: reduce) {
   .animate-float-slow,
   .animate-glow-pulse,
   .animate-blink,
-  .animate-fade-in-up,
-  .animate-warm-drift {
+  .animate-fade-in-up {
     animation: none;
   }
 }
