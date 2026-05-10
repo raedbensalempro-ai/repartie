@@ -1,51 +1,51 @@
 // =====================================================
 // Stayly · POST /api/generate
 // Génère une réponse Airbnb pro et chaleureuse via OpenAI.
-// MVP : modèle gpt-4o-mini (low cost), rate limit en mémoire par IP.
+// MVP : modèle gpt-4o-mini (low cost), rate limit par COOKIE (1h, 3 essais).
+// Pourquoi cookie : Vercel serverless = mémoire éphémère, in-memory ne tient pas.
+// Bypassable en incognito → suffisant pour MVP. Upstash Redis quand on aura du trafic.
 // =====================================================
 
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-// On force le runtime Node (pas Edge) pour rester compatible avec le SDK OpenAI
 export const runtime = "nodejs";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-// ---------- RATE LIMIT (in-memory, best-effort) ----------
-// Fonctionne par instance serverless. Suffisant pour un MVP démo public.
-// Pour passer à l'échelle : remplacer par Upstash Redis ou Vercel KV.
-const RATE_LIMIT = 3;            // 3 générations
-const WINDOW_MS = 60 * 60 * 1000; // par heure
-const store = new Map<string, { count: number; resetAt: number }>();
+// ---------- RATE LIMIT (cookie-based) ----------
+const COOKIE_NAME = "stayly_usage";
+const RATE_LIMIT = 3;                  // 3 générations
+const WINDOW_MS = 60 * 60 * 1000;      // par heure
 
-function getClientIp(req: NextRequest): string {
-  const fwd = req.headers.get("x-forwarded-for");
-  if (fwd) return fwd.split(",")[0].trim();
-  return req.headers.get("x-real-ip") || "anonymous";
+type UsageData = { count: number; resetAt: number };
+
+function readUsage(req: NextRequest): UsageData {
+  const cookie = req.cookies.get(COOKIE_NAME)?.value;
+  if (!cookie) {
+    return { count: 0, resetAt: Date.now() + WINDOW_MS };
+  }
+  try {
+    const data = JSON.parse(cookie) as UsageData;
+    // Fenêtre expirée → reset (nouveau cycle d'1h)
+    if (typeof data.resetAt !== "number" || data.resetAt < Date.now()) {
+      return { count: 0, resetAt: Date.now() + WINDOW_MS };
+    }
+    return { count: typeof data.count === "number" ? data.count : 0, resetAt: data.resetAt };
+  } catch {
+    return { count: 0, resetAt: Date.now() + WINDOW_MS };
+  }
 }
 
-function checkRateLimit(ip: string):
-  | { ok: true }
-  | { ok: false; resetInMin: number } {
-  const now = Date.now();
-  const entry = store.get(ip);
-
-  // Pas d'entrée ou fenêtre expirée → on (re)démarre
-  if (!entry || entry.resetAt < now) {
-    store.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return { ok: true };
-  }
-
-  if (entry.count >= RATE_LIMIT) {
-    return {
-      ok: false,
-      resetInMin: Math.max(1, Math.ceil((entry.resetAt - now) / 60_000)),
-    };
-  }
-
-  entry.count++;
-  return { ok: true };
+function attachUsageCookie(response: NextResponse, data: UsageData) {
+  const remainingMs = Math.max(60_000, data.resetAt - Date.now());
+  response.cookies.set(COOKIE_NAME, JSON.stringify(data), {
+    maxAge: Math.ceil(remainingMs / 1000),
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    path: "/",
+  });
 }
 
 // ---------- PROMPT SYSTÈME ----------
@@ -76,16 +76,19 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 2. Rate limit par IP
-    const ip = getClientIp(req);
-    const rl = checkRateLimit(ip);
-    if (!rl.ok) {
-      return NextResponse.json(
+    // 2. Rate limit par cookie
+    const usage = readUsage(req);
+    if (usage.count >= RATE_LIMIT) {
+      const resetInMin = Math.max(1, Math.ceil((usage.resetAt - Date.now()) / 60_000));
+      const limited = NextResponse.json(
         {
-          error: `Limite gratuite atteinte (3 essais / heure). Reviens dans ${rl.resetInMin} minute${rl.resetInMin > 1 ? "s" : ""}.`,
+          error: `Limite gratuite atteinte (${RATE_LIMIT} essais / heure). Reviens dans ${resetInMin} minute${resetInMin > 1 ? "s" : ""}.`,
         },
         { status: 429 },
       );
+      // On ré-attache le cookie pour rafraîchir son TTL
+      attachUsageCookie(limited, usage);
+      return limited;
     }
 
     // 3. Validation input
@@ -124,7 +127,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    return NextResponse.json({ reply });
+    // 5. Incrément du compteur + cookie mis à jour
+    const updated: UsageData = {
+      count: usage.count + 1,
+      resetAt: usage.resetAt, // on garde la fin de fenêtre actuelle
+    };
+    const response = NextResponse.json({
+      reply,
+      usage: { used: updated.count, limit: RATE_LIMIT },
+    });
+    attachUsageCookie(response, updated);
+    return response;
   } catch (err) {
     console.error("[/api/generate] error:", err);
     return NextResponse.json(
