@@ -1,47 +1,42 @@
-# Stayly
+# Repartie
 
-> L'IA qui répond à tes voyageurs Airbnb en quelques secondes, sans perdre le ton humain.
+L'IA qui te trouve la réplique parfaite, en 3 secondes.
 
-Stayly est un micro SaaS qui aide les hôtes Airbnb à générer rapidement des réponses professionnelles et chaleureuses à leurs voyageurs grâce à l'IA.
+Tu reçois un message méchant — texto, DM, mail. Tu le colles dans Repartie, tu choisis un ton (Cinglant / Piquant / Élégant / Glaçant), et tu reçois 3 propositions de comebacks prêtes à copier-coller.
 
 ## Stack
 
-- **Next.js 15** (App Router) + **TypeScript**
-- **Tailwind CSS v4**
-- **Supabase** — auth + base de données *(à venir)*
-- **Stripe** — paiement *(à venir)*
-- **OpenAI** — génération de réponses *(à venir)*
-- **Vercel** — hébergement
+- Next.js 15 (App Router)
+- TypeScript
+- Tailwind CSS
+- OpenAI `gpt-4o-mini`
+- Déployé sur Vercel
 
-## Démarrer en local
+## Lancer en local
 
 ```bash
 npm install
+cp .env.example .env.local  # et ajoute ta clé OPENAI_API_KEY
 npm run dev
 ```
 
 Ouvre [http://localhost:3000](http://localhost:3000).
 
-## Structure
+## Variables d'environnement
 
 ```
-app/
-  layout.tsx              # Layout racine + métadonnées
-  page.tsx                # Landing page
-  globals.css             # Styles globaux + animations
-  components/
-    HeroChatMockup.tsx    # Mockup chat animé (typing effect)
+OPENAI_API_KEY=sk-...
 ```
 
 ## Roadmap MVP
 
-- [x] Landing page
-- [ ] Authentification Supabase
-- [ ] Dashboard
-- [ ] Génération de réponse IA (OpenAI)
-- [ ] Historique
-- [ ] Stripe Checkout
+- [x] Landing page style LarpGPT (dark, bold, tight)
+- [x] Génération de 3 répliques avec choix de ton
+- [x] Rate limit cookie-based (3/h)
+- [ ] Stripe : Pro à 4,99 €/mois (illimité + tons exclusifs)
+- [ ] Page `/exemples` avec 50+ scénarios
+- [ ] Carrousels TikTok auto-générés
 
----
+## Auteur
 
-Build in public · 2026
+Construit par [@raedbensalempro](https://github.com/raedbensalempro-ai), un projet de la série « micro SaaS rapides ».
